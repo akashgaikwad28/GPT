@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom GPT Chat</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="chat-container">
+        <header>
+            <h1>Custom GPT Chat</h1>
+        </header>
+        <div class="chat-box" id="chat-box">
+            <!-- Messages will be dynamically added here -->
+        </div>
+        <form id="chat-form" class="chat-form">
+            <input type="text" id="user-input" placeholder="Type your message..." autocomplete="off" required>
+            <button type="submit">Send</button>
+        </form>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            const chatBox = $('#chat-box');
+
+            // Handle form submission
+            $('#chat-form').on('submit', function (e) {
+                e.preventDefault();
+                const userMessage = $('#user-input').val();
+                if (!userMessage) return;
+
+                // Append user's message to the chat
+                chatBox.append(`<div class="message user-message">${userMessage}</div>`);
+                $('#user-input').val(''); // Clear input field
+
+                // Send message to the server
+                $.ajax({
+                    url: '/api/chat',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ message: userMessage }),
+                    success: function (response) {
+                        chatBox.append(`<div class="message ai-message">${response.response}</div>`);
+                        chatBox.scrollTop(chatBox.prop("scrollHeight")); // Scroll to the latest message
+                    },
+                    error: function () {
+                        chatBox.append(`<div class="message error-message">Error communicating with the server.</div>`);
+                        chatBox.scrollTop(chatBox.prop("scrollHeight"));
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
