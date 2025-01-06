@@ -1,0 +1,16 @@
+# config/config.yaml
+
+# General application settings
+app:
+  name: "Custom ChatGPT"  # Name of the application
+  version: "1.0.0"    # Version of the application
+
+# API configuration
+api:
+  key: "${API_KEY}"   # Placeholder for the API key; it will be replaced by the actual value from environment variables
+
+# Logging configuration
+logging:
+  level: "INFO"       # Set the logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+  log_directory: "logs"  # Directory where logs will be stored
+  log_file_format: "[%(asctime)s] %(name)s - %(levelname)s - %(message)s"  # Log message format
